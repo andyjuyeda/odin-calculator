@@ -39,7 +39,16 @@ operatorButtons.forEach((button) => {
 });
 
 const operate = function (a, operator, b) {
-  return operators[operator](a, b);
+  num = operators[operator](a, b);
+  if (num % 1 !== 0) {
+    // check if the number has a decimal part
+    const numOfDecimalPlaces = num.toString().split(".")[1].length;
+    if (numOfDecimalPlaces > 10) {
+      // check if the number of digits after the decimal point exceeds 10
+      num = num.toFixed(10);
+    }
+  }
+  return num;
 };
 
 const equalsButton = document.querySelector(".equal");
@@ -61,4 +70,42 @@ clearButton.addEventListener("click", () => {
     button.disabled = false;
     button.classList.remove("active");
   });
+});
+
+const negativeButton = document.querySelector('.pos-or-neg');
+negativeButton.addEventListener("click", () => {
+    if (operatorSelected == false) {
+        if (inputA != "") {
+            if (inputA.includes("-")) {
+                inputA = inputA.replace("-", "");
+            } else {
+                inputA = "-".concat(inputA);
+            }
+            screenText.textContent = inputA;
+        }
+    } else {
+        if (inputB != "") {
+            if (inputB.includes("-")) {
+                inputB = inputB.replace("-", "");
+            } else {
+                inputB = "-".concat(inputB);
+            }
+            screenText.textContent = inputB;
+        }
+    }
+});
+
+const decimalButton = document.querySelector('.decimal');
+decimalButton.addEventListener("click", () => {
+    if (operatorSelected == false) {
+        if (inputA.includes(".") == false) {
+            inputA += ".";
+        }
+        screenText.textContent = inputA;
+    } else {
+        if (inputB.includes(".") == false) {
+            inputB += ".";
+        }
+        screenText.textContent = inputB;
+    }
 });

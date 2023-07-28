@@ -26,6 +26,7 @@ body {
     width: auto;
     height: 20%;
     border-radius: 10px;
+    overflow-x: hidden;
 }
 
 h1 {
