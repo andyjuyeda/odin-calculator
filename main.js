@@ -7,15 +7,22 @@ const operators = {
 
 let inputA = "";
 let operatorValue = "";
-let inputB = 10;
+let inputB = "";
+let operatorSelected = false;
+
 const screenText = document.querySelector('.screen-text');
 
 const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        inputA += button.dataset.value;
-        screenText.textContent = inputA;
-    })
+        if (!operatorSelected) {
+            inputA += button.dataset.value;
+            screenText.textContent = inputA;
+        } else {
+            inputB += button.dataset.value;
+            screenText.textContent = inputB;
+        }
+    });
 });
 
 const operatorButtons = document.querySelectorAll('.operator');
@@ -23,10 +30,12 @@ operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
         button.classList.add('active');
         operatorValue = button.dataset.value;
+        screenText.textContent = "";
+        operatorSelected = true;
         operatorButtons.forEach((button) => {
             button.disabled = true;
-        })
-    })
+        });
+    });
 });
 
 
@@ -36,7 +45,22 @@ const operate = function (a, operator, b) {
 
 const equalsButton = document.querySelector('.equal');
 equalsButton.addEventListener('click', () => {
-    screenText.textContent = operate(inputA, operatorValue, inputB);
+    inputA = operate(parseFloat(inputA), operatorValue, parseFloat(inputB));
+    screenText.textContent = inputA;
+    inputB = "";
+    operatorButtons.forEach((button) => {
+        button.disabled = false;
+        button.classList.remove('active');
+    })
+})
+
+const clearButton = document.querySelector('.clear');
+clearButton.addEventListener('click', () => {
+    inputA = "";
+    operatorValue = "";
+    inputB = "";
+    operatorSelected = false;
+    screenText.textContent = "";
     operatorButtons.forEach((button) => {
         button.disabled = false;
         button.classList.remove('active');
